@@ -3,8 +3,23 @@ const cors = require('cors');
 const port = process.env.PORT || 3001;
 const Synagogue = require('./models/synagogue.js');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const uri = `mongodb+srv://mishyjari:${process.env.MONGO_PASSWORD}@cluster0.zcuhp.mongodb.net/shul-finder?retryWrites=true&w=majority`;
+const mapkitApi = process.env.MAPKIT_API;
+
+const token = jwt.sign(
+  {
+    typ: 'JWT',
+    origin: 'http://localhost:3000',
+  },
+  mapkitApi,
+  {
+    algorithm: 'ES256',
+    issuer: 'B93A9CG7F9',
+    keyid: 'FCHCKTS567',
+  }
+);
 
 const connectionParams = {
   useNewUrlParser: true,
@@ -24,7 +39,11 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-  res.send('Meow');
+  res.redirect('/synagogues');
+});
+
+app.get('/gettoken', (req, res) => {
+  res.send(token);
 });
 
 app.get('/synagogues', async (req, res) => {
