@@ -11,7 +11,7 @@ const mapkitApi = process.env.MAPKIT_API;
 const token = jwt.sign(
   {
     typ: 'JWT',
-    origin: 'http://localhost:3000',
+    origin: 'https://www.shulfinder.com',
   },
   mapkitApi,
   {
